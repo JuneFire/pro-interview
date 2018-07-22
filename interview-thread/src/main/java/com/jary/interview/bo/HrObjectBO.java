@@ -30,7 +30,7 @@ public class HrObjectBO {
     }
 
     /**
-     * hr的性命
+     * hr的姓名
      */
     private String name;
 
