@@ -1,38 +1,71 @@
-package com.jary.interview.leetcode;
+package demo2;
 
-import javafx.util.Pair;
-import sun.plugin2.os.windows.SECURITY_ATTRIBUTES;
+/*
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
 
-import java.util.HashSet;
-import java.util.Set;
-import java.util.regex.Pattern;
+
 
 public class Solution_2 {
 
-    public int numUniqueEmails(String[] emails) {
+    public static class ListNode {
 
+        int val;
+        ListNode next;
+        ListNode(int x) { val = x; }
+    }
 
-        if (emails == null || emails.length == 0) return 0;
+    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
 
-        String REGEX_EMAIL = "^([a-z0-9A-Z]+[-|\\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{2,}$";
+        ListNode pre = new ListNode(0);
+        ListNode cur = pre;
+        int carry = 0;
 
-        Set<String> set = new HashSet<>();
-        String emailName,emailDomain;
-        for (String email : emails){
-            if (Pattern.matches(REGEX_EMAIL,email)) throw new IllegalArgumentException("error email!");
-            String[] emailSpilt = email.split("@");
-            emailName = emailSpilt[0].split("\\+")[0].replaceAll("\\.","");
-            emailDomain = emailSpilt[1];
-            set.add(emailName + "@" + emailDomain);
+        while(l1!=null || l2!=null){
+            int x = l1 == null ? 0 : l1.val;
+            int y = l2 == null ? 0 : l2.val;
+            int add = x + y + carry;
+
+            carry = add / 10;  // 向下取整
+            add = add % 10;
+
+            cur.next = new ListNode(add);  // 头节点为空
+            cur = cur.next;
+
+            if(l1!=null)
+                l1 = l1.next;
+            if(l2!=null)
+                l2 = l2.next;
         }
 
-        return set.size();
+        if(carry > 0){
+            cur.next = new ListNode(carry);
+        }
+        return pre.next;
     }
 
+    void printList(ListNode last) {
+        while (last != null) {
+            System.out.print(last.val + ",");
+            last = last.next;
+        }
+    }
     public static void main(String[] args){
-        Solution_2 solution = new Solution_2();
-        String[] emails = {"test.email+alex@leetcode.com","test.e.mail+bob.cathy@leetcode.com","testemail+david@lee.tcode.com"};
-        System.out.println("num = " + solution.numUniqueEmails(emails));
-    }
+        ListNode l1 = new ListNode(8);
+        l1.next = new ListNode(9);
+        l1.next.next = new ListNode(9);
 
+        ListNode l2 = new ListNode(4);
+        l2.next = new ListNode(9);
+        l2.next.next = new ListNode(9);
+
+        Solution_2 solution2 = new Solution_2();
+        ListNode listNode = solution2.addTwoNumbers(l1,l2);
+        solution2.printList(listNode);
+    }
 }
