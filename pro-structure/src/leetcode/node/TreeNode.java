@@ -1,4 +1,4 @@
-package com.jary.interview.leetcode.node;
+package leetcode.node;
 
 public class TreeNode {
 

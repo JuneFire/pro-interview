@@ -1,8 +1,7 @@
-package com.jary.interview.leetcode;
+package leetcode;
 
-import javafx.util.Pair;
-
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Solution_4 {
 

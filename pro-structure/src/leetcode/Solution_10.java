@@ -1,4 +1,4 @@
-package com.jary.interview.leetcode;
+package leetcode;
 
 import java.util.*;
 

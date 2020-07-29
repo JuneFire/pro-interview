@@ -1,11 +1,12 @@
-package com.jary.interview.leetcode;
+package leetcode;
 
 import javafx.util.Pair;
 
-import java.io.*;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.*;
-import java.util.concurrent.Executor;
 
 public class Solution_13 {
 

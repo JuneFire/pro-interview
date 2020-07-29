@@ -1,4 +1,4 @@
-package com.jary.interview.leetcode;
+package leetcode;
 
 import com.jary.interview.leetcode.node.TreeNode;
 

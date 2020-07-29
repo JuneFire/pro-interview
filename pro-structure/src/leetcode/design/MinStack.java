@@ -1,4 +1,4 @@
-package com.jary.interview.leetcode.design;
+package leetcode.design;
 
 import java.util.Stack;
 
