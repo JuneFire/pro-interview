@@ -1,4 +1,4 @@
-package leetcode.design;
+package src.leetcode.design;
 
 import java.util.Stack;
 

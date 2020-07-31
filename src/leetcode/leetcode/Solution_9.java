@@ -1,6 +1,6 @@
-package leetcode;
+package src.leetcode.leetcode;
 
-import com.jary.interview.leetcode.node.TreeNode;
+import src.leetcode.node.TreeNode;
 
 import java.util.LinkedList;
 import java.util.Queue;

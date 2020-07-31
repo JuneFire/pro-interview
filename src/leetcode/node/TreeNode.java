@@ -1,4 +1,4 @@
-package leetcode.node;
+package src.leetcode.node;
 
 public class TreeNode {
 

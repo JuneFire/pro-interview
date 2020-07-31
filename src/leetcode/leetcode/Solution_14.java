@@ -1,4 +1,4 @@
-package leetcode;
+package src.leetcode;
 
 import javafx.util.Pair;
 
