@@ -2,6 +2,7 @@ package leetcode.Mind;
 
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 
 /**
  * @Author: zkcheng
@@ -133,12 +134,79 @@ public class DoublePoint {
         }
     }
 
+    /**
+     * 判断链表是否存在环
+     * 141. Linked List Cycle (Easy)
+     *
+     * 使用双指针，一个指针每次移动一个节点，一个指针每次移动两个节点，如果存在环，那么这两个指针一定会相遇。
+     */
+    public boolean hasCycle(ListNode head){
+        if (head == null)
+            return false;
+        ListNode node1 = head, node2 = head.next;
+        while (node1 != null && node2 != null && node2.next != null){
+            if(node1 == node2)
+                return true;
+            node1 = node1.next;
+            node2 = node2.next.next;
+        }
+        return false;
+    }
+
+    /**
+     * 最长子序列
+     * 524. Longest Word in Dictionary through Deleting (Medium)
+     *
+     * 题目描述：删除 s 中的一些字符，使得它构成字符串列表 d 中的一个字符串，找出能构成的最长字符串。如果有多个相同长度的结果，返回字典序的最小字符串。
+     */
+
+    public String findLongestWord(String s, List<String> d){
+        String longestWord = "";
+        for(String target : d){
+            int l1 = longestWord.length(), l2 = target.length();
+            if(l1 > l2 || (l1 == l2 && longestWord.compareTo(target) < 0)){
+                continue;
+            }
+            if(isSubStr(s, target)){
+                longestWord = target;
+            }
+        }
+        return longestWord;
+    }
+
+    /**
+     * 判断target是否是s的条件子串
+     * @param s
+     * @param target
+     * @return
+     */
+    private boolean isSubStr(String s, String target){
+        int i = 0, j  = 0;
+        while (i < s.length() && j < target.length()){
+            if(s.charAt(i) == target.charAt(j)){
+                j++;
+            }
+            i++;
+        }
+        return j == target.length();
+    }
+
 
     public static void main(String[] args){
             DoublePoint doublePoint = new DoublePoint();
-
+            String[] test = new String[]{"ale","apple","monkey","plea"};
+            System.out.println(doublePoint.findLongestWord("abpcplea", Arrays.asList(test)));
     }
 
 
 
+}
+
+class ListNode {
+    int val;
+    ListNode next;
+    ListNode(int index){
+        val = index;
+        next = null;
+    }
 }
