@@ -195,4 +195,48 @@ public class Greedy {
         return cnt <= 1;
     }
 
+    /**
+     * 763. 划分字母区间
+     */
+    public List<Integer> partitionLabels(String s) {
+        if(s == null || s.length() == 0){
+            return null;
+        }
+        // 存储每个字母的最大last
+        int[] charLabelsArray = new int[26];
+        for (int i = 0; i < s.length(); i++) {
+            charLabelsArray[s.charAt(i) - 'a'] = i;
+        }
+        List<Integer> result = new ArrayList<>();
+
+        int firstIndex = 0;
+        while (firstIndex < s.length()){
+            int lastIndex = firstIndex;
+            for (int i = firstIndex; i < s.length() && i <= lastIndex; i++){
+                // 取last，比较first-last 区间，更新last，直到其不能更新
+                if(charLabelsArray[s.charAt(i) - 'a'] > lastIndex){
+                    lastIndex = charLabelsArray[s.charAt(i) - 'a'];
+                }
+            }
+            result.add(lastIndex - firstIndex + 1); // 存区间
+            firstIndex = lastIndex + 1;
+        }
+        return result;
+    }
+
+    public static void main(String[] args){
+        Greedy greedy = new Greedy();
+        System.out.println(greedy.partitionLabels("ababcbacadefegdehijhklij"));
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
