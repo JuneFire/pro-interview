@@ -1,6 +1,7 @@
 package leetcode.Mind;
 
 import javafx.util.Pair;
+import leetcode.Structure.TreeNode;
 
 import java.time.temporal.ChronoUnit;
 import java.util.*;
@@ -411,6 +412,7 @@ public class Search {
     /**
      * 1. 数字键盘组合
      * 17. Letter Combinations of a Phone Number (Medium)
+     * 'digits' must consist of values from 2 to 9 only
      */
     private static final String[] KEYS = {"", "", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"};
 
@@ -438,10 +440,384 @@ public class Search {
     }
 
 
+    /**
+     * 2. IP 地址划分
+     * 93. Restore IP Addresses(Medium)
+     */
+    public List<String> restoreIpAddresses(String s) {
+        List<String> addresses = new ArrayList<>();
+        StringBuilder tempAddress = new StringBuilder();
+        doRestore(0, tempAddress, addresses, s);
+        return addresses;
+    }
+
+    private void doRestore(int k, StringBuilder tempAddress, List<String> addresses, String s) {
+        if (k == 4 || s.length() == 0) {
+            if (k == 4 && s.length() == 0) {
+                addresses.add(tempAddress.toString());
+            }
+            return;
+        }
+        for (int i = 0; i < s.length() && i <= 2; i++) {
+            if (i != 0 && s.charAt(0) == '0') {
+                break;
+            }
+            String part = s.substring(0, i + 1);
+            if (Integer.valueOf(part) <= 255) {
+                if (tempAddress.length() != 0) {
+                    part = "." + part;
+                }
+                tempAddress.append(part);
+                doRestore(k + 1, tempAddress, addresses, s.substring(i + 1));
+                tempAddress.delete(tempAddress.length() - part.length(), tempAddress.length());
+            }
+        }
+    }
+ // 还有一种暴力解法
+
+    /**
+     * 3. 在矩阵中寻找字符串
+     * 79. Word Search (Medium)
+     */
+    public boolean exist(char[][] board, String word) {
+        if (word == null || word.length() == 0) {
+            return true;
+        }
+        if (board == null || board.length == 0 || board[0].length == 0) {
+            return false;
+        }
+
+        m = board.length;
+        n = board[0].length;
+        boolean[][] hasVisited = new boolean[m][n];
+
+        for (int r = 0; r < m; r++) {
+            for (int c = 0; c < n; c++) {
+                if (backtracking(0, r, c, hasVisited, board, word)) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    private boolean backtracking(int curLen, int r, int c, boolean[][] visited, final char[][] board, final String word) {
+        if (curLen == word.length()) {
+            return true;
+        }
+        if (r < 0 || r >= m || c < 0 || c >= n
+                || board[r][c] != word.charAt(curLen) || visited[r][c]) {
+
+            return false;
+        }
+
+        visited[r][c] = true;
+
+        for (int[] d : direction) {
+            if (backtracking(curLen + 1, r + d[0], c + d[1], visited, board, word)) {
+                return true;
+            }
+        }
+
+        visited[r][c] = false;
+
+        return false;
+    }
+
+    /**
+     * 4. 输出二叉树中所有从根到叶子的路径
+     * 257. Binary Tree Paths (Easy)
+     */
+    public List<String> binaryTreePaths(TreeNode root){
+        List<String> paths = new ArrayList<>();
+        if(root == null){
+            return null;
+        }
+        List<Integer> values = new ArrayList<>(); //存储每条路径的值
+        //回溯
+        backtracking(root, paths, values);
+        return paths;
+    }
+
+    // 回溯
+    private void backtracking(TreeNode node, List<String> paths, List<Integer> values){
+        if(node == null){
+            return;
+        }
+
+        values.add(node.val); //存储路径
+        if(node.left == null && node.right == null){ //叶子节点
+            paths.add(buildPath(values));  // 一条路径走完啦
+        } else {
+          backtracking(node.left, paths, values); // 向左dfs
+          backtracking(node.right, paths, values);  // 向右dfs
+        }
+        values.remove(values.size() - 1); //向上回溯
+    }
+
+    private String buildPath(List<Integer> values){
+        StringBuilder builder = new StringBuilder();
+        for (int i = 0; i < values.size(); i++) {
+            if(i != values.size() - 1){
+                builder.append(i + "->");
+            }else {
+                builder.append(i);
+            }
+        }
+        return builder.toString();
+    }
+
+    /**
+     * 5. 排列
+     * 46. Permutations (Medium)
+     * [1,2,3] have the following permutations:
+     * [
+     *   [1,2,3],
+     *   [1,3,2],
+     *   [2,1,3],
+     *   [2,3,1],
+     *   [3,1,2],
+     *   [3,2,1]
+     * ]
+     *
+     */
+    public List<List<Integer>> permute(int[] nums) {
+        List<List<Integer>> permutes = new ArrayList<>();
+        List<Integer> permuteList = new ArrayList<>();
+        boolean[] hasVisited = new boolean[nums.length];
+        backtracking(permuteList, permutes, hasVisited, nums);
+        return permutes;
+    }
+
+    private void backtracking(List<Integer> permuteList, List<List<Integer>> permutes, boolean[] visited, final int[] nums) {
+        if (permuteList.size() == nums.length) {
+            permutes.add(new ArrayList<>(permuteList)); // 重新构造一个 List
+            return;
+        }
+        for (int i = 0; i < visited.length; i++) {
+            if (visited[i]) {
+                continue;
+            }
+            visited[i] = true;
+            permuteList.add(nums[i]);
+            backtracking(permuteList, permutes, visited, nums);
+            permuteList.remove(permuteList.size() - 1);
+            visited[i] = false;
+        }
+    }
+
+    /**
+     * 6. 含有相同元素求排列
+     * 47. Permutations II (Medium)
+     *
+     * [1,1,2] have the following unique permutations:
+     * [[1,1,2], [1,2,1], [2,1,1]]
+     * 数组元素可能含有相同的元素，进行排列时就有可能出现重复的排列，要求重复的排列只返回一个。
+     *
+     * 在实现上，和 Permutations 不同的是要先排序，然后在添加一个元素时，判断这个元素是否等于前一个元素，
+     * 如果等于，并且前一个元素还未访问，那么就跳过这个元素。(换句话说，遇见相同的数字，只能选后面的)
+     */
+    public List<List<Integer>> permuteUnique(int[] nums) {
+        List<List<Integer>> permutes = new ArrayList<>();
+        List<Integer> permuteList = new ArrayList<>();
+        Arrays.sort(nums);  // 排序
+        boolean[] hasVisited = new boolean[nums.length];
+        backtracking2(permuteList, permutes, hasVisited, nums);
+        return permutes;
+    }
+
+    private void backtracking2(List<Integer> permuteList, List<List<Integer>> permutes, boolean[] visited, final int[] nums) {
+        if (permuteList.size() == nums.length) {
+            permutes.add(new ArrayList<>(permuteList));
+            return;
+        }
+
+        for (int i = 0; i < visited.length; i++) {
+            if (i != 0 && nums[i] == nums[i - 1] && !visited[i - 1]) {
+                continue;  // 防止重复
+            }
+            if (visited[i]){
+                continue;
+            }
+            visited[i] = true;
+            permuteList.add(nums[i]);
+            backtracking(permuteList, permutes, visited, nums);
+            permuteList.remove(permuteList.size() - 1);
+            visited[i] = false;
+        }
+    }
+
+    /**
+     * 7. 组合
+     * 77. Combinations (Medium)
+     *
+     * If n = 4 and k = 2, a solution is:
+     * [
+     *   [2,4],
+     *   [3,4],
+     *   [2,3],
+     *   [1,2],
+     *   [1,3],
+     *   [1,4],
+     * ]
+     *
+     */
+    public List<List<Integer>> combine(int n, int k) {
+        List<List<Integer>> combinations = new ArrayList<>();
+        List<Integer> combineList = new ArrayList<>();
+        backtracking(combineList, combinations, 1, k, n);
+        return combinations;
+    }
+
+    private void backtracking(List<Integer> combineList, List<List<Integer>> combinations, int start, int k, final int n) {
+        if (k == 0) {
+            combinations.add(new ArrayList<>(combineList));
+            return;
+        }
+        for (int i = start; i <= n - k + 1; i++) {  // 剪枝
+            combineList.add(i);
+            backtracking(combineList, combinations, i + 1, k - 1, n);  // 递归取2位
+            combineList.remove(combineList.size() - 1);
+        }
+    }
+
+    /**
+     * 8. 组合求和
+     * 39. Combination Sum (Medium)
+     *
+     * given candidate set [2, 3, 6, 7] and target 7,
+     * A solution set is:
+     * [[7],[2, 2, 3]]
+     */
+    public List<List<Integer>> combinationSum(int[] candidates, int target) {
+        List<List<Integer>> combinations = new ArrayList<>();
+        backtracking(new ArrayList<>(), combinations, 0, target, candidates);
+        return combinations;
+    }
+
+    private void backtracking(List<Integer> tempCombination, List<List<Integer>> combinations,
+                              int start, int target, final int[] candidates) {
+
+        if (target == 0) {
+            combinations.add(new ArrayList<>(tempCombination));
+            return;
+        }
+        for (int i = start; i < candidates.length; i++) {
+            if (candidates[i] <= target) {
+                tempCombination.add(candidates[i]);
+                backtracking(tempCombination, combinations, i, target - candidates[i], candidates);
+                tempCombination.remove(tempCombination.size() - 1);
+            }
+        }
+    }
+
+    /**
+     * 9. 含有相同元素的组合求和
+     * 40. Combination Sum II (Medium)
+     * For example, given candidate set [10, 1, 2, 7, 6, 1, 5] and target 8,
+     * A solution set is:
+     * [
+     *   [1, 7],
+     *   [1, 2, 5],
+     *   [2, 6],
+     *   [1, 1, 6]
+     * ]
+     * candidate要有序
+     * candidate的数不能重复使用，既start 要+1
+     */
+
+    public List<List<Integer>> combinationSum2(int[] candidates, int target) {
+        List<List<Integer>> combinations = new ArrayList<>();
+        Arrays.sort(candidates);
+        backtracking(new ArrayList<>(), combinations, new boolean[candidates.length], 0, target, candidates);
+        return combinations;
+    }
+
+    private void backtracking(List<Integer> tempCombination, List<List<Integer>> combinations,
+                              boolean[] hasVisited, int start, int target, final int[] candidates) {
+
+        if (target == 0) {
+            combinations.add(new ArrayList<>(tempCombination));
+            return;
+        }
+        for (int i = start; i < candidates.length; i++) {
+            if (i != 0 && candidates[i] == candidates[i - 1] && !hasVisited[i - 1]) {  //防止重复
+                continue;
+            }
+            if (candidates[i] <= target) {
+                tempCombination.add(candidates[i]);
+                hasVisited[i] = true;
+                backtracking(tempCombination, combinations, hasVisited, i + 1, target - candidates[i], candidates);
+                hasVisited[i] = false;
+                tempCombination.remove(tempCombination.size() - 1);
+            }
+        }
+    }
+
+    /**
+     * 10. 1-9 数字的组合求和
+     * 216. Combination Sum III (Medium)
+     * 从 1-9 数字中选出 k 个数不重复的数，使得它们的和为 n。
+     */
+    public List<List<Integer>> combinationSum3(int k, int n) {
+        List<List<Integer>> combinations = new ArrayList<>();
+        List<Integer> path = new ArrayList<>();
+        backtracking(k, n, 1, path, combinations);
+        return combinations;
+    }
+
+    private void backtracking(int k, int n, int start,
+                              List<Integer> tempCombination, List<List<Integer>> combinations) {
+
+        if (k == 0 && n == 0) {
+            combinations.add(new ArrayList<>(tempCombination));
+            return;
+        }
+        if (k == 0 || n == 0) {
+            return;
+        }
+        for (int i = start; i <= 9; i++) {
+            tempCombination.add(i);
+            backtracking(k - 1, n - i, i + 1, tempCombination, combinations);
+            tempCombination.remove(tempCombination.size() - 1);
+        }
+    }
+
+    /**
+     * 11. 子集
+     * 78. Subsets (Medium)
+     * 输入：nums = [1,2,3]
+     * 输出：[[],[1],[2],[1,2],[3],[1,3],[2,3],[1,2,3]]
+     */
+    public List<List<Integer>> subsets(int[] nums) {
+        List<List<Integer>> subsets = new ArrayList<>();
+        List<Integer> tempSubset = new ArrayList<>();
+        for (int size = 0; size <= nums.length; size++) {  //从空子集开始，分别筛选其子集
+            backtracking(0, tempSubset, subsets, size, nums); // 不同的子集大小
+        }
+        return subsets;
+    }
+
+    private void backtracking(int start, List<Integer> tempSubset, List<List<Integer>> subsets,
+                              final int size, final int[] nums) {
+
+        if (tempSubset.size() == size) {
+            subsets.add(new ArrayList<>(tempSubset));
+            return;
+        }
+        for (int i = start; i < nums.length; i++) {
+            tempSubset.add(nums[i]);
+            backtracking(i + 1, tempSubset, subsets, size, nums);
+            tempSubset.remove(tempSubset.size() - 1);
+        }
+    }
+
+
 
     public static void main(String[] args){
         Search search = new Search();
-        System.out.println(search.letterCombinations("234"));
+        System.out.println(search.letterCombinations("12"));
     }
 
 }
