@@ -52,9 +52,116 @@ public class Binary {
         return -1;
     }
 
+    // 二分查找
+    private boolean binarySearch(int[] nums, int target){
+        int l = 0, r = nums.length- 1;
+        while(l <= r) {
+            int mid =  l + (r - l) / 2;
+            if(nums[mid] == target){
+                return true;
+            } else if(nums[mid] > target){
+                r = mid - 1;
+            } else {
+                l = mid + 1;
+            }
+        }
+        return false;
+    }
+
+    public boolean search(int[] nums, int target) {
+        int k = 0;
+        for(int i = 1; i < nums.length; i++){
+            if(nums[i-1] > nums[i]){
+                k = i-1;
+                break;
+            }
+        }
+        if(target == nums[0]){
+            return true;
+        }else if(target > nums[0]){
+            int[] right = new int[k+1];
+            System.arraycopy(nums,0, right, 0, k + 1);
+            return binarySearch(right, target);
+        }else {
+            int[] left = new int[nums.length  - 1 - k];
+            System.arraycopy(nums,k + 1, left, 0, nums.length - 1 - k );
+            return binarySearch(left,target);
+        }
+
+    }
+
+
+    // 返回大于给定元素的最小值
+    public char nextGreaterLetter(char[] letter, char target){
+        int l = 0, r = letter.length - 1;
+        while (l <= r){
+            int mid = l + (r - l) / 2;
+            if(letter[mid] <= target){  // 如果mid小于等于目标值，则再迭代几次，直到循环结束（当letter[mid + 1] 刚好大于 target的时候，循环就结束了）
+                l = mid + 1;
+            }else {
+                r = mid - 1;
+            }
+        }
+        return l < letter.length ? letter[l] : letter[0];
+    }
+
+
+    // 一个有序数组只有一个数不出现两次，找出这个数
+    //Input: [1, 1, 2, 3, 3, 4, 4, 8, 8]
+    //Output: 2
+    public int singleNonDuplicate(int[] nums){
+        int l = 0, h = nums.length - 1;
+        while (l < h){
+            int mid = l + (h - l) / 2;
+            if(mid % 2 == 1){
+                mid--;     // mid取偶数位置
+            }
+            if(nums[mid] == nums[mid + 1]){  // mid的左半部分是正常的，这时往右边查找
+                l = mid + 2;  //保证左下标是偶数
+            }else {
+                h = mid;
+            }
+        }
+        return nums[l]; // 因为l是偶数，target的下标也是偶数
+    }
+
+    // 找到有序数组中target的区间的first
+    public int findFirstDuplicate(int[] nums, int target){
+        int l = 0, h = nums.length - 1;
+        while (l < h){
+            int mid = l + (h - l) / 2;
+            if(nums[mid] < target){  // {1} , 0
+                l = mid + 1;
+            } else {
+                h = mid;
+            }
+        }
+        return l;
+    }
+
+    public int[] searchRange(int[] nums, int target){
+        int index1 = findFirstDuplicate(nums, target);
+        if (index1 >= nums.length || nums[index1] != target){
+            return new int[]{-1, -1};
+        }
+        int index2 = index1;
+        for (int i = index1; i < nums.length; i++){
+            if(nums[i] == target){
+                index2 = i;
+            }else {
+                break;
+            }
+
+        }
+        return new int[]{index1,index2};
+    }
+
+
+
     public static void main(String[] args){
         Binary binary = new Binary();
-        System.out.println(binary.shortestPathBinaryMartix(new int[][]{{0,0,0},{1,1,0},{1,1,0}}));
+//        System.out.println(binary.shortestPathBinaryMartix(new int[][]{{0,0,0},{1,1,0},{1,1,0}}));
+        System.out.println(binary.searchRange(new int[]{1,2,3}, 2));
     }
 
 }
