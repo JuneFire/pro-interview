@@ -32,6 +32,17 @@ public class LinkListTrain {
         return head;
     }
 
+    // 链表反转(头插法)
+    public ListNode reversList(ListNode head){
+        ListNode newNode = new ListNode(-1);
+        while (head != null){
+            ListNode next = head.next; // 获取下一个节点
+            head.next = newNode.next;  // head 的下一个节点 指向 newNode 的下一个节点
+            newNode.next = head;  // 插入head
+            head = next;  // 下一个节点
+        }
+        return newNode.next;
+    }
 
     public static void main(String[] args){
         ListNode l1 = new ListNode(1);

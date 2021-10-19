@@ -12,8 +12,8 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="interview-local-cache" target="8" />
-      <module name="interview-thread" target="8" />
+      <module name="interview-local-cache" target="1.7" />
+      <module name="interview-thread" target="1.7" />
     </bytecodeTargetLevel>
   </component>
 </project>
