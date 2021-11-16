@@ -6,7 +6,7 @@ package leetcode.Structure;
  * @Description:
  */
 public class ListNode {
-    int val;
+    public int val;
     public ListNode next;
     public ListNode(int val){
         this.val = val;
