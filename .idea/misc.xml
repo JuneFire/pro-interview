@@ -5,10 +5,12 @@
       <list>
         <option value="$PROJECT_DIR$/interview-thread/pom.xml" />
         <option value="$PROJECT_DIR$/interview-local-cache/pom.xml" />
+        <option value="$PROJECT_DIR$/RedisSever/pom.xml" />
+        <option value="$PROJECT_DIR$/desginModel/pom.xml" />
       </list>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_12" default="false" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_12" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/pro-structure/out" />
   </component>
 </project>

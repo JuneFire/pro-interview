@@ -2,6 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/RedisSever/RedisSever.iml" filepath="$PROJECT_DIR$/RedisSever/RedisSever.iml" />
+      <module fileurl="file://$PROJECT_DIR$/desginModel/desginModel.iml" filepath="$PROJECT_DIR$/desginModel/desginModel.iml" />
       <module fileurl="file://$PROJECT_DIR$/interview-leetcode/interview-leetcode.iml" filepath="$PROJECT_DIR$/interview-leetcode/interview-leetcode.iml" />
       <module fileurl="file://$PROJECT_DIR$/interview-local-cache/interview-local-cache.iml" filepath="$PROJECT_DIR$/interview-local-cache/interview-local-cache.iml" />
       <module fileurl="file://$PROJECT_DIR$/interview-thread/interview-thread.iml" filepath="$PROJECT_DIR$/interview-thread/interview-thread.iml" />
