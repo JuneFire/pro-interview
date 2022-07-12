@@ -67,7 +67,8 @@ public class Scholar {
                 if (!line.isEmpty()) {
                     builder.append(line + "\r\n");
                     System.out.println(builder.toString());
-                } else {
+
+
                     if (builder.length() == 0) {
                         continue;
                     }

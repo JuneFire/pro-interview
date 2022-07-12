@@ -1,9 +1,14 @@
 import jdk.nashorn.internal.runtime.ListAdapter;
 import leetcode.Structure.ListNode;
 import leetcode.Structure.TreeNode;
+import org.apache.commons.lang3.StringUtils;
 import sun.font.FontRunIterator;
+import test.DemoDO;
 
+import java.lang.reflect.Field;
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * @Author: zkcheng
@@ -48,7 +53,7 @@ public class Main {
 
     /**
      * 递减子串
-     * @param nums
+     *
      * @return
      */
 //    public List desort(int[] nums){
@@ -75,8 +80,7 @@ public class Main {
 //        }
 //
 //    }
-
-    public boolean isTrue(TreeNode root1, TreeNode root2){
+    public boolean isTrue(TreeNode root1, TreeNode root2) {
         if (root1 == null && root2 == null) {
             return true;
         }
@@ -91,9 +95,9 @@ public class Main {
 
     //
 
-    public List<List<Integer>> indexNum(int[] nums){
+    public List<List<Integer>> indexNum(int[] nums) {
 
-        Map<Integer, List<Integer>> map  = new LinkedHashMap<>();
+        Map<Integer, List<Integer>> map = new LinkedHashMap<>();
         for (int num : nums) {
             map.put(num, new ArrayList<>());
         }
@@ -107,18 +111,140 @@ public class Main {
 
         List<List<Integer>> result = new ArrayList<>();
 
-        for (Integer key : map.keySet()){
+        for (Integer key : map.keySet()) {
             result.add(map.get(key));
         }
 
         return result;
     }
 
-    public static void main(String[] args){
-        Main main = new Main();
-        List<List<Integer>> list = main.indexNum(new int[]{1,1,2,3,4,3,1,1,2,3,3,4,1,4});
-        list.forEach(System.out::println);
+    public static void main(String[] args) {
+//        Main main = new Main();
+//        List<List<Integer>> list = main.indexNum(new int[]{1,1,2,3,4,3,1,1,2,3,3,4,1,4});
+//        list.forEach(System.out::println);
+//        String test = "";
+//        System.out.println(test.isEmpty());
+//
+        List<DemoDO> list = new ArrayList<>();
+        DemoDO demoDO = new DemoDO();
+//        demoDO.setName("1213");
+//        demoDO.setValue("2123");
+        list.add(demoDO);
+
+        System.out.println(checkObjAllFieldsIsNulls(list));
     }
+    /**
+     *判断List对象中属性值是否全为空
+     */
+    private static boolean checkObjAllFieldsIsNulls(List<?> list){
+        try {
+            for (Object objet : list){
+                for (Field f : objet.getClass().getDeclaredFields()){
+//                    f.setAccessible(true);
+                    Field field = objet.getClass().getDeclaredField(f.getName());
+                    field.setAccessible(true);
+                    System.out.println(f.getName()+ " " + field.get(objet));
+                    if(field.get(objet) != null){
+                        return true;
+                    }
+                }
+                Class<?> superClazz = objet.getClass().getSuperclass();
+                for (Field f : superClazz.getDeclaredFields()){
+                    Field field = superClazz.getDeclaredField(f.getName());
+                    field.setAccessible(true);
+                    System.out.println(f.getName() + " " + field.get(objet));
+
+                }
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+      return false;
+    }
+
+    //    public static boolean checkObjAllFieldsIsNull(Object object) {
+//        if (null == object) {
+//            return true;
+//        }
+//        try {
+//            for (Field f : object.getClass().getDeclaredFields()) {
+//                f.setAccessible(true);
+//                if (f.get(object) != null && StringUtils.isNotBlank(f.get(object).toString())) {
+//                    return false;
+//                }
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        return true;
+//    }
+
+
+    /**
+     *判断对象中属性值是否全为空
+     */
+    public static boolean checkObjAllFieldsIsNull(Object object) {
+        if (null == object) {
+            return true;
+        }
+        try {
+            for (Field f : object.getClass().getDeclaredFields()) {
+                f.setAccessible(true);
+                System.out.print(f.getName() + ":");
+                System.out.println(f.get(object));
+                if (f.get(object) != null && StringUtils.isNotBlank(f.get(object).toString())) {
+                    return false;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return true;
+    }
+
+//    public static boolean checkObjAllFieldsIsNull(Object object) {
+//        if (null == object) {
+//            return true;
+//        }
+//        try {
+//            for (Field f : object.getClass().getDeclaredFields()) {
+//                f.setAccessible(true);
+//                if (f.get(object) != null && StringUtils.isNotBlank(f.get(object).toString())) {
+//                    return false;
+//                }
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        return true;
+//    }
+
+
+    /**
+     *判断一个实体类对象实例的所有成员变量是否为空
+     *@param obj 校验的类对象实例
+     *@return List
+     *@throws Exception
+     */
+    public static List<String> isObjectFieldEmpty(Object obj) {
+        List<String> list = new ArrayList<>();
+        try {
+            Class<?> clazz = obj.getClass();  //得到类对象
+            Field[] fs = clazz.getDeclaredFields(); //得到属性集合
+            for (Field field : fs) {            //遍历属性
+                field.setAccessible(true); //设置属性是可以访问的（私有的也可以）
+                if (field.get(obj) == null || field.get(obj) == "" || "null".equals(field.get(obj))) {
+                    String name = field.getName();
+                    list.add(name);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+
 }
 
 
