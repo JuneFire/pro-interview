@@ -26,7 +26,7 @@ public class MapSort {
                 //return me2.getKey().compareTo(me1.getKey()); // 降序排序
             }
         });*/
-        Collections.sort(entryList1, Comparator.comparing(Entry::getKey));
+        entryList1.sort(Entry.comparingByKey());
         System.out.println("第一种Map排序方式, 根据key排序: \n" + entryList1);
 
         // 第一种Map排序方式, 根据value排序
@@ -38,6 +38,7 @@ public class MapSort {
                 //return me2.getValue().compareTo(me1.getValue()); // 降序排序
             }
         });*/
+//        entryList2.sort(Entry.comparingByValue());
         Collections.sort(entryList2, Comparator.comparing(Entry::getValue));
         System.out.println("\n第一种Map排序方式, 根据value排序结果: \n" + entryList2);
 
