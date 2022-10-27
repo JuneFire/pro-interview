@@ -19,12 +19,16 @@ public class MapSort {
 
         // 第一种Map排序方式, 根据key排序
         List<Map.Entry<String, String>> entryList1 = new ArrayList<Map.Entry<String, String>>(map1.entrySet());
-   /*     Collections.sort(entryList1, new Comparator<Map.Entry<String, String>>() {
+/*        Collections.sort(entryList1, new Comparator<Map.Entry<String, String>>() {
             @Override
             public int compare(Entry<String, String> me1, Entry<String, String> me2) {
-                return me1.getKey().compareTo(me2.getKey()); // 升序排序
-                //return me2.getKey().compareTo(me1.getKey()); // 降序排序
+//                return me1.getKey().compareTo(me2.getKey()); // 升序排序
+                return me2.getKey().compareTo(me1.getKey()); // 降序排序
             }
+        });*/
+/*        Collections.sort(entryList1, (me1, me2) -> {
+//                return me1.getKey().compareTo(me2.getKey()); // 升序排序
+            return me2.getKey().compareTo(me1.getKey()); // 降序排序
         });*/
         entryList1.sort(Entry.comparingByKey());
         System.out.println("第一种Map排序方式, 根据key排序: \n" + entryList1);
