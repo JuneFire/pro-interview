@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/JUC/JUC.iml" filepath="$PROJECT_DIR$/JUC/JUC.iml" />
+      <module fileurl="file://$PROJECT_DIR$/JWT/JWT.iml" filepath="$PROJECT_DIR$/JWT/JWT.iml" />
       <module fileurl="file://$PROJECT_DIR$/RedisSever/RedisSever.iml" filepath="$PROJECT_DIR$/RedisSever/RedisSever.iml" />
       <module fileurl="file://$PROJECT_DIR$/desginModel/desginModel.iml" filepath="$PROJECT_DIR$/desginModel/desginModel.iml" />
       <module fileurl="file://$PROJECT_DIR$/interview-leetcode/interview-leetcode.iml" filepath="$PROJECT_DIR$/interview-leetcode/interview-leetcode.iml" />

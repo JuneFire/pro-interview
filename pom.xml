@@ -5,14 +5,15 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <artifactId>spring-cloud-openfeign</artifactId>
-        <groupId>org.springframework.cloud</groupId>
-        <version>2.1.0.RELEASE</version>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.3.3.RELEASE</version>
     </parent>
 
-    <groupId>org.example</groupId>
+    <groupId>com.zkc.project</groupId>
     <artifactId>pro-interview</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <version>1.0.0</version>
 
 
 
@@ -20,5 +21,10 @@
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
     </properties>
+
+    <modules>
+        <module>interview-project</module>
+        <module>JWT</module>
+    </modules>
 
 </project>
