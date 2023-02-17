@@ -1,4 +1,4 @@
-package src;
+package src.python;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -7,6 +7,8 @@ import java.io.InputStreamReader;
 /**
  * @author zkCheng
  * @date 2023/2/17 17:16
+ * 思路： 1、直接把 predit.py 文件放在当前目录下，然后采用以下方式进行生成清晰图像
+ *       2、返回java一个图片名称，作为清晰后的图片，入库
  */
 public class RuntimeFunction {
     public static void main(String[] args) {
