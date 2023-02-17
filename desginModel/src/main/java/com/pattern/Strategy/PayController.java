@@ -1,10 +1,7 @@
 package com.pattern.Strategy;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author zkCheng
@@ -21,8 +18,8 @@ public class PayController {
         return payService.pay(type, amount);
     }
 
-    @RequestMapping("/hello")
-    public String hello(String hello,String hello2) {
+    @RequestMapping("/hello/{hello2}")
+    public String hello(String hello, @PathVariable String hello2) {
         return "........." + hello + hello2;
     }
 
