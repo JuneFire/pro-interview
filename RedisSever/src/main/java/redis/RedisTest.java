@@ -42,7 +42,7 @@ public class RedisTest {
             testHash(jedis);
             System.out.println("testHash=================end");
 
-            String key = "test";
+            String key = "main.java.com.test";
             jedis.set(key,"key");
         }
         catch (Exception e) {
@@ -54,7 +54,7 @@ public class RedisTest {
     }
 
     private static void testString(Jedis jedis) {
-        String key = "test:string:a";
+        String key = "main.java.com.test:string:a";
         // 为了保持多次测试结果一样，每次开始时都删除
         jedis.del(key);
         String value = "hello redis";
@@ -65,7 +65,7 @@ public class RedisTest {
     }
 
     private static void testList(Jedis jedis) {
-        String key = "test:list:a";
+        String key = "main.java.com.test:list:a";
         // 为了保持多次测试结果一样，每次开始时都删除
         jedis.del(key);
         List<String> values = new ArrayList<>();
@@ -82,7 +82,7 @@ public class RedisTest {
     }
 
     private static void testSet(Jedis jedis) {
-        String key = "test:set:a";
+        String key = "main.java.com.test:set:a";
         // 为了保持多次测试结果一样，每次开始时都删除
         jedis.del(key);
         Set<String> values = new HashSet<>();
@@ -101,7 +101,7 @@ public class RedisTest {
     }
 
     private static void testSortedSet(Jedis jedis) {
-        String key = "test:sortedset:a";
+        String key = "main.java.com.test:sortedset:a";
         // 为了保持多次测试结果一样，每次开始时都删除
         jedis.del(key);
         String[] values = { "C", "B", "G", "D", "d" };
@@ -116,7 +116,7 @@ public class RedisTest {
     }
 
     private static void testHash(Jedis jedis) {
-        String key = "test:hash:a";
+        String key = "main.java.com.test:hash:a";
         // 为了保持多次测试结果一样，每次开始时都删除
         jedis.del(key);
         Map<String, String> values = new HashMap<>();

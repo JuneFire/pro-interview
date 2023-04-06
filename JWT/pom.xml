@@ -61,8 +61,8 @@
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
+            <artifactId>spring-boot-starter-main.java.com.test</artifactId>
+            <scope>main.java.com.test</scope>
             <exclusions>
                 <exclusion>
                     <groupId>org.junit.vintage</groupId>

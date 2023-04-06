@@ -13,6 +13,7 @@
         <module name="desginModel" />
         <module name="JWT" />
         <module name="interview-local-cache" />
+        <module name="interview-leetcode" />
         <module name="JUC" />
         <module name="RedisSever" />
       </profile>
@@ -20,7 +21,7 @@
     <bytecodeTargetLevel>
       <module name="demo" target="1.5" />
       <module name="desginModel" target="1.8" />
-      <module name="interview-leetcode" target="8" />
+      <module name="interview-leetcode" target="1.8" />
       <module name="interview-local-cache" target="1.7" />
       <module name="interview-project" target="1.8" />
       <module name="interview-thread" target="1.7" />
@@ -35,6 +36,7 @@
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="JWT" options="-parameters" />
       <module name="desginModel" options="-parameters" />
+      <module name="interview-leetcode" options="-parameters" />
       <module name="interview-project" options="-parameters" />
     </option>
   </component>

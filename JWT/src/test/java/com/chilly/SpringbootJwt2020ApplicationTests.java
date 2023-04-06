@@ -77,7 +77,7 @@ class SpringbootJwt2020ApplicationTests {
                 .setHeaderParam("alg", "HS256")
                 //payload
                 .setClaims(map)
-                .setSubject("admin-test")
+                .setSubject("admin-main.java.com.test")
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRE))
                 .setId(UUID.randomUUID().toString())
                 // signature

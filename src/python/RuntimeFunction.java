@@ -23,7 +23,7 @@ public class RuntimeFunction {
 
        还有就是可以看出，此方法可以满足我们python代码中调用第三方库的情况，简单实用。
 			*/
-            String[] args1=new String[]{"E:\\ProgramData\\Anaconda3\\envs\\d2l\\python","E:\\PythonProject\\mySelfDeblur\\test.py", "nizjoi"};
+            String[] args1=new String[]{"E:\\ProgramData\\Anaconda3\\envs\\d2l\\python","E:\\PythonProject\\mySelfDeblur\\main.java.com.test.py", "nizjoi"};
             proc =Runtime.getRuntime().exec(args1);
 //            proc = Runtime.getRuntime().exec("python ./plus.py");
             BufferedReader in = new BufferedReader(new InputStreamReader(proc.getInputStream()));
