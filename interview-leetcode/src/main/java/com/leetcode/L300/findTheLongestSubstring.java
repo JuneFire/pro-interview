@@ -1,4 +1,4 @@
-package main.java.leetcode.L300;
+package com.leetcode.L300;
 
 import java.util.Arrays;
 

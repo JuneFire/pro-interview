@@ -1,7 +1,7 @@
-package main.java.leetcode.Mind;
+package com.leetcode.Mind;
 
 import javafx.util.Pair;
-import main.java.leetcode.Structure.TreeNode;
+import com.leetcode.Structure.TreeNode;
 
 import java.util.*;
 

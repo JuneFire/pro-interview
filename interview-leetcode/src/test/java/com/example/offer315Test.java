@@ -1,7 +1,8 @@
 package com.example;
 
 
-import com.leetcode.offer.one.Offer315;
+import com.leetcode.offer.Offer1630;
+import com.leetcode.offer.Offer315;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -19,4 +20,9 @@ public class offer315Test {
         System.out.println(solution.maxProductAfterCutting(120));
     }
 
+    @Test
+    public void test1630(){
+        Offer1630 offer1630 = new Offer1630();
+        System.out.println(offer1630.isNumber("e"));
+    }
 }

@@ -1,4 +1,4 @@
-package main.java.leetcode.L300.贪心;
+package com.leetcode.L300.贪心;
 
 import java.util.Arrays;
 

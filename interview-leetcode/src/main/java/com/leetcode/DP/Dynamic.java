@@ -1,4 +1,4 @@
-package main.java.leetcode.DP;
+package com.leetcode.DP;
 
 /**
  * @author zkCheng

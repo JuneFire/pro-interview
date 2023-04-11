@@ -1,4 +1,4 @@
-package com.leetcode.offer.one;
+package com.leetcode.offer;
 
 import java.util.*;
 

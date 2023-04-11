@@ -1,4 +1,4 @@
-package main.java.leetcode.Thread;
+package com.leetcode.Thread;
 
 import java.util.HashMap;
 import java.util.concurrent.CountDownLatch;

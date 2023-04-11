@@ -1,6 +1,8 @@
 package com.leetcode.Mind;
 
-import main.java.leetcode.Structure.TreeNode;
+
+
+import com.leetcode.Structure.TreeNode;
 
 import java.util.ArrayList;
 import java.util.LinkedList;

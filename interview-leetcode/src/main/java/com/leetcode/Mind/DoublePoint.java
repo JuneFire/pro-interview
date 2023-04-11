@@ -1,4 +1,4 @@
-package main.java.leetcode.Mind;
+package com.leetcode.Mind;
 
 import java.util.Arrays;
 import java.util.HashSet;

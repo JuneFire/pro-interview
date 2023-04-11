@@ -1,4 +1,4 @@
-package main.java.leetcode.Thread;
+package com.leetcode.Thread;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;

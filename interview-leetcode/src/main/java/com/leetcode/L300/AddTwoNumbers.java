@@ -1,6 +1,6 @@
-package main.java.leetcode.L300;
+package com.leetcode.L300;
 
-import main.java.leetcode.Structure.ListNode;
+import com.leetcode.Structure.ListNode;
 
 /**
  * https://leetcode.wang/leetCode-2-Add-Two-Numbers.html
