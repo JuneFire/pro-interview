@@ -1,5 +1,7 @@
 package com.leetcode.offer;
 
+import java.util.Stack;
+
 /**
  * @author zkCheng
  * @date 2023/4/10 11:22
@@ -133,14 +135,15 @@ public class Offer1630 {
 
     // 双递归
     public boolean isSubStructure(TreeNode A, TreeNode B) {
-
         return (A != null && B != null) && (recur(A, B) || isSubStructure(A.left, B) || isSubStructure(A.right, B));
     }
 
     // 递归判断该子树节点是否匹配
     public boolean recur(TreeNode A, TreeNode B) {
-        if (B == null) return true;  // 完全匹配，B给走完了
-        if (A == null || A.val != B.val) return false; //A走完了还没配上
+        if (B == null)
+            return true;  // 完全匹配，B给走完了
+        if (A == null || A.val != B.val)
+            return false; //A走完了还没配上
         return recur(A.left, B.left) && recur(A.right, B.right);
     }
 }

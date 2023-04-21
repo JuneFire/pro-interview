@@ -2,6 +2,7 @@ package com.example;
 
 
 import com.leetcode.offer.Offer1630;
+import com.leetcode.offer.Offer3145;
 import com.leetcode.offer.Offer315;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -24,5 +25,12 @@ public class offer315Test {
     public void test1630(){
         Offer1630 offer1630 = new Offer1630();
         System.out.println(offer1630.isNumber("e"));
+    }
+
+    @Test
+    public void test3145(){
+        Offer3145 off = new Offer3145();
+
+        System.out.println(off.validateStackSequences2(new int[]{1,2,3,4,5}, new int[]{4,5,3,2,1}));
     }
 }
