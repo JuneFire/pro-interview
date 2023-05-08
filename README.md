@@ -8,3 +8,4 @@ github.com/JuneFire/shanjupay/edit/master/README.md
 - [com.leetcode 题解](https://github.com/CyC2018/CS-Notes/blob/master/notes/Leetcode%20题解%20-%20目录.md)
 - [算法](https://github.com/CyC2018/CS-Notes/blob/master/notes/算法%20-%20目录.md)
 - [笔试面试题库](https://www.nowcoder.com/contestRoom?from=cyc_github)
+- [技术博客](https://learn.lianglianglee.com/)

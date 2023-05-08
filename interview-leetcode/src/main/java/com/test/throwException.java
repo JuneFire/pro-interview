@@ -1,4 +1,4 @@
-package main.java.test;
+package com.test;
 
 public class throwException {
     public static void main(String[] args){
