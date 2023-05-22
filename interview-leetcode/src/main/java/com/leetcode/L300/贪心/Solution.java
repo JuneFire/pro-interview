@@ -28,7 +28,6 @@ public class Solution {
         return cnt;
     }
 
-    }
     // 思路1：优先考虑饼干，小饼干先喂饱小胃口
     public static int findContentChildren1(int[] g, int[] s) {
         Arrays.sort(g);

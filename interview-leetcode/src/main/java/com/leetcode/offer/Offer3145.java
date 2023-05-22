@@ -1,8 +1,10 @@
 package com.leetcode.offer;
 
 import com.leetcode.Structure.TreeNode;
+import org.apache.tomcat.util.buf.StringUtils;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Offer3145 {
     public boolean validateStackSequences(int[] pushed, int[] popped) {
@@ -216,4 +218,131 @@ public class Offer3145 {
 
         return headNew;
     }
+
+
+    //剑指 Offer 36. 二叉搜索树与双向链表
+    public LinkNode treeToDoublyList(LinkNode root){
+        // 将该二叉搜索树转换成一个排序的循环双向链表。
+
+        Queue<LinkNode> queue = new LinkedList<>();
+        //中序遍历填充队列
+        inorder(root, queue);
+        // 给队列中元素链接起来
+        LinkNode head = queue.poll();
+        LinkNode pre = head;
+        while (!queue.isEmpty()){
+            LinkNode cur = queue.poll();
+            cur.left = pre;
+            pre.right = cur;
+            pre = cur;
+        }
+
+        pre.right = head;
+        head.left = pre;
+
+        return head;
+    }
+
+     void inorder(LinkNode root, Queue<LinkNode> queue){
+        if(root == null){
+            return;
+        }
+        inorder(root.left, queue);
+        queue.add(root);
+        inorder(root.right, queue);
+    }
+
+    //剑指 Offer 37. 序列化二叉树
+    /**
+     *
+     * @param root
+     * @return [1,2,3,null,null,4,5]
+     */
+    // Encodes a tree to a single string.
+    public String serialize(TreeNode root) {
+        if(root == null){
+            return "";
+        }
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.add(root);
+        StringBuilder builder = new StringBuilder();
+        while (!queue.isEmpty()){
+            TreeNode node = queue.poll();
+            if (node != null){
+                builder.append(node.val).append(",");
+                queue.add(node.left);
+                queue.add(node.right);
+            }else {
+                builder.append("null,");
+            }
+        }
+        // TODO 删除末尾所有的 null
+        String str = builder.toString();
+        String[] split = str.split(",");
+        int i = split.length - 1;
+        while (split[i].equals("null")){
+            i--;
+        }
+        List<String> collect = Arrays.stream(split).limit(i + 1).collect(Collectors.toList());
+
+        String join = String.join(",", collect);
+        return join;
+    }
+
+//    public String serialize2(TreeNode root) {
+//        if(root == null) return "[]";
+//        StringBuilder res = new StringBuilder("[");
+//        Queue<TreeNode> queue = new LinkedList<>();
+//        queue.add(root);
+//        while(!queue.isEmpty()) {
+//            TreeNode node = queue.poll();
+//            if(node != null) {
+//                res.append(node.val + ",");
+//                queue.add(node.left);
+//                queue.add(node.right);
+//            }
+//            else res.append("null,");
+//        }
+//        res.deleteCharAt(res.length() - 1);
+//        res.append("]");
+//        return res.toString();
+//    }
+
+
+
+    /**
+     * 将[1,2,3,null,null,4,5] 转为 树
+     * @param data
+     * @return
+     */
+    // Decodes your encoded data to tree.
+    public TreeNode deserialize(String data) {
+        if(data == null || data.length() <= 0){
+            return null;
+        }
+        String[] s = data.split(",");
+        Queue<TreeNode> queue = new LinkedList<>();
+        TreeNode root = new TreeNode(Integer.parseInt(s[0]));
+        queue.add(root);
+        int i = 1;
+        while (!queue.isEmpty() && i <= s.length - 1){
+            TreeNode node = queue.poll();
+            if(!s[i].equals("null")){
+                TreeNode left = new TreeNode(Integer.parseInt(s[i]));
+                node.left = left;
+                queue.add(left);
+            }
+            i++;
+
+            if(!s[i].equals("null")){
+                TreeNode right = new TreeNode(Integer.parseInt(s[i]));
+                node.right = right;
+                queue.add(right);
+            }
+            i++;
+        }
+
+        return root;
+    }
+
 }
