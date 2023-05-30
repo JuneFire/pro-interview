@@ -61,4 +61,12 @@ public class offer315Test {
 
 //        off.deserialize("1,2,3,null,null,4,5");
     }
+
+    @Test
+    public void test3(){
+        Offer3145 offer = new Offer3145();
+        offer.sortArray2(new int[]{1,2,3,4}, new int[]{2,4,6});
+    }
+
+
 }
