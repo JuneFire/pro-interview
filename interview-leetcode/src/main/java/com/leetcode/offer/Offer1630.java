@@ -1,6 +1,8 @@
 package com.leetcode.offer;
 
-import java.util.Stack;
+import com.leetcode.Structure.TreeNode;
+
+import java.util.*;
 
 /**
  * @author zkCheng
@@ -135,15 +137,112 @@ public class Offer1630 {
 
     // 双递归
     public boolean isSubStructure(TreeNode A, TreeNode B) {
+
         return (A != null && B != null) && (recur(A, B) || isSubStructure(A.left, B) || isSubStructure(A.right, B));
     }
 
     // 递归判断该子树节点是否匹配
     public boolean recur(TreeNode A, TreeNode B) {
-        if (B == null)
-            return true;  // 完全匹配，B给走完了
-        if (A == null || A.val != B.val)
-            return false; //A走完了还没配上
+        if (B == null) return true;  // 完全匹配，B给走完了
+        if (A == null || A.val != B.val) return false; //A走完了还没配上
         return recur(A.left, B.left) && recur(A.right, B.right);
     }
+
+    /**
+     * 剑指 Offer 29. 顺时针打印矩阵
+     */
+    public int[] spiralOrder(int[][] matrix) {
+        if (matrix == null || matrix.length == 0 || matrix[0].length == 0) {
+            return new int[0];
+        }
+        int k = 0, x = 0, p = 0;  //k 代表从第一行开始， x代表从第一列开始
+        int l = matrix.length - 1, j = matrix[0].length - 1;  // l行，j列
+        int[] res = new int[(l + 1) * (j + 1)];
+
+        while (true) {
+            // 从左到右
+            for (int i = x; i <= j; i++) {
+                res[p++] = matrix[k][i];  // 从左到右, k代表第几行
+            }
+            if (++k > l) {
+                break;
+            }
+            // 从上到下
+            for (int i = k; i <= l; i++) {
+                res[p++] = matrix[i][j];
+            }
+            if (--j < x) {
+                break;
+            }
+            // 从右到左
+            for (int i = j; i >= x; i--) {
+                res[p++] = matrix[l][i];
+            }
+            if (--l < k) {
+                break;
+            }
+            // 从下到上
+            for (int i = l; i >= k; i--) {
+                res[p++] = matrix[i][x];
+            }
+            if (++x > j) {
+                break;
+            }
+        }
+        return res;
+    }
+
+
+    public static void main(String[] args) {
+        int i = 0;
+        i = i++;
+        i = ++i;
+        System.out.println(i);  // 输出1
+    }
+}
+
+/**
+ * 剑指 Offer 30. 包含min函数的栈
+ * https://leetcode.cn/problems/bao-han-minhan-shu-de-zhan-lcof/
+ */
+
+class MinStack {
+    Stack<Integer> stack1;  // 存放原始数据
+    Stack<Integer> stack2;  // 存放最小值集合
+
+    /**
+     * initialize your data structure here.
+     */
+    public MinStack() {
+        this.stack1 = new Stack<Integer>();
+        this.stack2 = new Stack<Integer>();
+    }
+
+    public void push(int x) {
+        // 进栈
+        stack1.push(x);
+        if (stack2.isEmpty() || x <= stack2.peek()) {
+            stack2.push(x);
+        }
+
+    }
+
+    public void pop() {
+        if(!stack1.isEmpty()){
+            if(stack1.peek().equals(stack2.peek())){
+                stack2.pop();
+            }
+            stack1.pop();
+        }
+    }
+
+    public int top() {
+        return stack1.peek();
+    }
+
+    public int min() {
+        return stack2.peek();
+    }
+
+
 }
