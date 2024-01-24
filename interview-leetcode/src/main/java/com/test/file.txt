@@ -1,0 +1,485 @@
+
+写文章
+点击打开橙汁的主页
+Java的文件操作以及IO流种类
+一匹马的远航
+一匹马的远航
+IT
+1 人赞同了该文章
+一 java文件操作以及文件锁
+
+1. java的文件操作
+
+                /*
+		 * 在程序中操作文件和目录都可以通过File类来完成。值得指出的是，不管是文件还是目录都是使用File来操作的，
+		 * File能新建，删除，重命名文件和目录，File不能访问文件内容本身。如果需要访问文件内容本身，则需要使用输入输出流本身
+		 * File file=new File("aa");只是创建了一个file对象并没有创建aa文件或者aa文件夹，只有调用方法的时候才会知道创建文件或者文件夹
+		 * 调用.mkdir()方法就是创建一个目录，如果调用createFile就代表创建了一个文件文件名叫aa
+		 *
+		 */
+		public static void test(String[] args) throws IOException{
+			//以当前路径来创建一个File对象，这只是一个对象并没有创建路径或者文件
+			File file=new File(".");
+			//直接获取文件名，输出一点
+			System.out.println(file.getName());
+			//获取相对路径的父路径可能出错，下面代码输出null
+			System.out.println(file.getParent());
+			//获取决对路径
+			System.out.println(file.getAbsolutePath());
+			//获取上一级路径
+			System.out.println(file.getAbsoluteFile().getParent());
+			//当前路径下创建一个临时文件
+			File tempFile=File.createTempFile("aaa", ".txt",file);
+			//指定JVM退出时删除该文件
+			tempFile.deleteOnExit();
+			//以系统当前时间作为新文件名来创建新文件
+			File newFile=new File(System.currentTimeMillis()+"");
+			System.out.println("newFile对象是否存在："+newFile.exists());
+			//指定newFile对象来创建一个文件
+			newFile.createNewFile();
+			//以newFile对象来创建一个目录，因为newFile已经存在
+			//所以下面方法返回false，即无法创建该目录
+			newFile.mkdir();
+			//使用list（）方法列出当前路径下的多有文件和路径
+			String[] fileList=file.list();
+			System.out.println("====当前路径下所有文件和路径如下=====");
+			for(String fileName:fileList){
+				System.out.println(fileName);
+			}
+			//listRoots（）静态方法列出所有的磁盘根路径
+			File[] roots=File.listRoots();
+			System.out.println("====系统所有的根路径如下====");
+			for(File root:roots){
+				System.out.println(root);
+			}
+		}
+2. java创建文件的构造方法
+
+      public static void test2(String[] args) throws IOException{
+	   // 构造方法一,只是创建了一个file的对象，并没有真正的创建file文件
+	   File file12 = new File("f://file1//");
+	   System.out.println(file12.length());
+	   file12.mkdir();
+	   // 构造方法二
+	   File file2 = new File("f://file1", "file2");
+	   // 构造方法三
+	   File file3 = new File(file2, "file3.txt");
+	   System.out.println(file3.getName());
+	}
+3. 文件操作时上锁
+
+	/*
+	 * 在操作文件的时候对一个文件上锁，操作完成后解锁
+	*/
+	public static void main(String[] args) throws Exception{
+		//使用FileOutputStream获取FileChannel
+		FileChannel channel=new FileOutputStream("f://file.txt").getChannel();
+
+		//使用非阻塞式方式对指定文件加锁
+		FileLock lock=channel.tryLock();
+		//程序暂停10s
+		Thread.sleep(10000);
+		//释放锁
+		lock.release();
+	}
+
+
+二 java的IO流种类
+
+1. InputStream和Reader
+
+	/*
+	* InputStream和Reader是所有输入流的抽象基类，本身不能创建实例来执行输入，但他们将成为所有输入流的模板
+	* 所以他们的方法是所有输入流都可以使用的方法
+	* 在InputStream里包含如下三个方法
+	* 1.int read（）：从输入流中读取单个字节，返回所读取的字节数据（字节数据可直接转换为int类型）
+	* 2.int read（byte[] b）：从输入流中最多读取b.length个字节的数据，并将其存储在数组b中，返回实际读取的字节数
+	* 3.int read(byte[] b,int off,int len)：从输入流中最多读取len个字节的数据，并将其存储在数组b中，并不是从数组起点开始，而是从off位置开始，返回实际读取的字节数
+	* Reader里包含如下三个方法
+	* 1.int read（）：从输入流中读取单个字符，返回所读取的字符数据（字符数据可直接转换为int类型）
+	* 2.int read(char[] cbuf)：从输入流中最多读取cbuf.length个字符的数据，并将其存放在cbuf中，返回实际读取的字符数
+	* 3.int read(char[] cbuf,int off,int len)：从输入流中最多读取len个字符的数据，并将其存储在字符数组cbuf中，放入数组cbuf中时，并不是从数组起点开始，
+	*   而是从off位置开始，返回实际读取的字符串
+	*
+	*
+	* InputStream和Reader都是抽象类，本身不能创建实例，但他们分别有一个用于读取文件的输入流：FileInputStream和FileReader，他们都是节点流，会直接和指定文件关联
+	*/
+
+	/*
+	* InputStreanTest
+	*/
+	public static void main(String[] args) throws Exception{
+		//创建字节输入流
+		FileInputStream fis=new FileInputStream("f://file.txt");
+		//创建一个长度为1024的竹筒
+		byte[] bbuf=new byte[1024];
+		//用于保存实际读取的字节数
+		int hasRead=0;
+		//使用循环来重复取水过程
+		while((hasRead=fis.read(bbuf))>0){
+		//取出竹筒中的水滴（字节），将字节数组转换成字符串输入
+		System.out.println(new String(bbuf,0,hasRead));
+		}
+		//关闭文件输入流，放在finally块里更安全
+		fis.close();
+	}
+
+	/*
+	* ReaderTest
+	*/
+	public static void maina(String[] args) throws Exception{
+		//创建字符输入流
+		FileReader fr=new FileReader("f://file.txt");
+		//创建一个长度为32的竹筒
+		char[] cbuf=new char[32];
+		//用于保存实际读取的字符数
+		int hashRead=0;
+		//使用循环来重复取水过程
+		while((hashRead=fr.read(cbuf))>0){
+			//取出竹筒中的水滴（字节），将字节数组转换成字符串输入
+			System.out.println(new String(cbuf,0,hashRead));
+		}
+		//关闭流
+		fr.close();
+	}
+2. OutputStream和Writer
+
+       /*
+	* OutputStream和Writer也非常相似，两个都提供了如下三个方法
+	* 1.void write(int c)：将指定的字节、字符输出到输出流中，c既可以代表字节，也可以代表字符
+	* 2.void write(byte[]/char[] buf)：将字节数组/字符数组中的数据输出到指定输出流中
+	* 3.void write(byte[]/char[]buf,int off,int len):将字节数组/字符数组从off位置开始，长度为len的字节/字符输出到输出流中
+	*
+	* 因为字符流直接以字符作为操作单位，所以writer可以用字符串来代替字符数组，以String对象为参数
+	* void writer(String str)：将str字符串里包含的字符输出到指定输出流中
+	* void writer(String str,int off,int len):将str字符串里从off位置开始，长度为len的字符输出到指定的输出流中
+	*/
+
+       /*
+	* OutputStream
+	*/
+	public static void OutputStream(String[] args) throws Exception{
+		//创建字节输入流
+		FileInputStream fis=new FileInputStream("f://file.txt");
+		//创建字节输出流
+		FileOutputStream fos=new FileOutputStream("f://file1.txt");
+		//创建一个竹筒
+		byte[] bbuf=new byte[32];
+		int hashRead=0;
+		while((hashRead=fis.read(bbuf))>0){
+			//每读取一次，即写入文件输出流，多了多少写多少
+			fos.write(bbuf, 0, hashRead);
+		}
+                //关闭流
+		fis.close();
+		fos.close();
+
+	}
+
+       /*
+	* Writer
+	*/
+	public static void main(String[] args) throws IOException{
+		//系统会自动查找这个nihao.txt如果没有自动欧诺个创建并写入
+		FileWriter fw=new FileWriter("f://nihao.txt");
+
+		fw.write("锦瑟无端五十弦\r\n");
+
+		//关闭流
+		fw.close();
+	}
+3.转换流
+
+       /*
+	* 输入输出体修中还提供了两个转换流，这两个转换流用于实现将字节流换成字符流，其中InputStreamReader将字节输入流转换成字符输入流，
+	* OutputStreamWriter将字节输出流换成字符输出流
+	*/
+	public static void main(String[] args) throws IOException{
+		//将System.in对象转换成Reader对象
+		InputStreamReader reader=new InputStreamReader(System.in);
+		//将普通的Reader包装成BufferedReader
+		BufferedReader br=new BufferedReader(reader);
+
+		String line=null;
+		//采用循环方式来逐行读取
+		while((line=br.readLine())!=null){
+			//如果读取的字符串为exit则程序退出
+			if(line.equals("exit")){
+				System.exit(1);
+			}
+			//打印读取内容
+			System.out.println("输入内容为："+line);
+		 }
+
+	}
+4.退回输入流
+
+       /*
+	* PushibackInputStream和PushbackReader
+	* 它们都提供了如下方法
+	* 1.void unread(byte[]/char[] buf)：将一个字节/字符数组内容推回到缓冲区里，从而允许重复读取刚刚读取的内容
+	* 2.void unread(byte[]/car[]b,int off,int len)：将一个字节/字符数组里从off开始，长度为len字节/字符的内容推回
+	*   到缓冲区里，从而允许重复读取刚刚读取的内容
+	* 3.void unread(int v):将一个字节/字符推回到缓冲区里，从而重复读取刚刚读取的内容
+	* 两个推回输入流都带有一个推回缓冲区，当程序调用这两个推回输入流的unread（）方法时，系统将会把指定数组的内容推回到该缓冲区里，而推回
+	* 输入流每次调用read（）方法时总是先从推回缓冲区读取，只有完全读取了推回缓冲区的内容后，但还没装满read（）所需的数组才会从原有输入流中读取
+	*
+	*/
+	public static void main(String[] args) throws Exception{
+		//创建一个PushbackReader对象，指定推回缓冲区的长度为64
+		PushbackReader pr=new PushbackReader(new FileReader(
+				"f://file.txt"),64);
+		char[] buf=new char[32];
+		//用来保存上次读取的字符串内容
+		String lastContent="";
+		int hashRead=0;
+		//循环读取文件的内容
+		while((hashRead=pr.read(buf))>0){
+			//将读取的内容转换成字符串
+			String content=new String(buf, 0, hashRead);
+			int targetIndex=0;
+			//将上次读取的字符串和本次读取的字符串拼接起来
+			//查看是否含有包含目标字符串，如果包含目标字符串
+			if((targetIndex=(lastContent+content).indexOf("new PushbackReader"))>0){
+				//将本次内容和上次内容一起推回缓冲区
+				pr.unread((lastContent+content).toCharArray());
+				//重新定义一个长度为targetIndex的char数组
+				if(targetIndex>32){
+					buf=new char[targetIndex];
+				}
+				//再次读取指定长度的内容（就是目标字符串之前的内容）
+				pr.read(buf,0,targetIndex);
+				//打印读取的内容
+				System.out.println(new String(buf,0,targetIndex));
+				System.exit(0);
+			}else{
+				//打印上次读取的内容
+				System.out.println(lastContent);
+				//将本次内容设置为上次读取的内容
+				lastContent=content;
+			}
+		}
+
+	}
+5 随机访问流
+
+	/*
+	* RandomAccessFile是java输入输出流体系中功能最丰富的文件内容访问类，他既可以读取文件内容，也可以像文件输出数据
+	* 支持随机访问的方式
+	* RandomAccessFile类有两个构造器，其实这两个构造器基本相同，只是指定文件的形式不同而已，一个使用String参数，一个使用FIle
+	* 除此之外创建RandomAccessFile对象时还需要指定一个mode参数，该参数指定RandomAccessFile的访问模式，该参数有如下四个值
+	* 1."r"：以只读方式打开指定文件。如果试图对该RandomAccessFile执行写入方法，都将抛出io异常
+	* 2."rw":以读写方式打开指定文件，如果该文件不存在，则尝试创建该文件
+	* 3."rws":以读写方式打开指定文件。相对于"rw"模式，还要求对文件的内容或元数据的每个更新都同步写入到底层存储设备
+	* 4."rwd":以读写方式打开指定文件。相对于"rw"模式，还要求对文件内容每个更新都同步写入到底层存储设备
+	*/
+	public static void test(String[] args) throws Exception{
+		RandomAccessFile raf=new RandomAccessFile("f://file.txt","r");
+		//获取RandomAccessFile对象文件指针的位置，初始值为0
+		System.out.println("RandomAccessFile的文件指针的初始位置"+raf.getFilePointer());
+		//移动raf的文件记录指针的位置
+		raf.seek(4);
+		byte[] bbuf=new byte[1024];
+		//用于保存实际读取的字节数
+		int hasRead=0;
+		//使用循环重复取水的过程
+		while((hasRead=raf.read(bbuf))>0){
+			//取出竹筒中水滴转化成字符串输出
+			System.out.println(new String(bbuf, 0, hasRead));
+		}
+	}
+
+	/**
+	* 追加内容
+	* @throws Exception
+	*/
+	public static void test2(String[] args) throws Exception{
+		RandomAccessFile raf=new RandomAccessFile("f://file.txt","rw");
+
+		//将记录指针移动到文件最后
+		raf.seek(raf.length());
+		raf.write("追加的内容".getBytes());
+	}
+
+	/*
+	* 向指定位置插入指定内容
+	*/
+	public static void insert(String fileName,long pos,String insertContent) throws IOException{
+		File tmp=File.createTempFile("tmp", null);
+
+		RandomAccessFile raf=new RandomAccessFile(fileName,"rw");
+
+		//使用临时文件来保存插入点后的数据
+		FileOutputStream tmpout=new FileOutputStream(tmp);
+		FileInputStream tmpin=new FileInputStream(tmp);
+
+		raf.seek(pos);
+		//----下面代码将插入点后的内容读入临时文件中保存
+		byte[] bbuf=new byte[64];
+		//用于保存实际读取的字节数
+		int hasRead=0;
+		//使用循环方式读取插入点的数据
+		while((hasRead=raf.read(bbuf))>0){
+			//将读取的数据写入临时文件
+			tmpout.write(bbuf,0,hasRead);
+		}
+		//-----下面代码用于插入内容
+		//把文件记录指针重新定位到pos位置
+		raf.seek(pos);
+		//追加需要插入的内容
+		raf.write(insertContent.getBytes());
+		//追加临时文件中的内容
+		while((hasRead=tmpin.read(bbuf))>0){
+			raf.write(bbuf,0,hasRead);
+		}
+	}
+
+	public static void main(String[] args) throws IOException{
+		insert("nihao", 45, "插入的哈哈");
+	}
+6 NIO 流的Buffer
+
+	/*
+	* Buffer就像一个数组，他可以保存多个类型相同的数据，有三个重要的概念
+	* 容量（capacity）：缓冲区的容量，表示该buffer的最大数据容量，最多可以存储多少个数据，不能为负值，创建后不能改变
+	* 界限（limit）：第一个不应该被读出或者写入的缓冲区位置索引，limit后面的数据不能被读也不能被写
+	* 位置（position）：用于指明下一个可以被读出的或者写入的缓冲区位置索引
+	*/
+	public static void main(String[] args){
+		//创建Buffer
+		CharBuffer buff=CharBuffer.allocate(8);
+		System.out.println("capacity"+buff.capacity());
+		System.out.println("limit"+buff.limit());
+		System.out.println("position"+buff.position());
+		//放入元素
+		buff.put('a');
+		buff.put('b');
+		buff.put('c');
+		System.out.println("capacity"+buff.capacity());
+		System.out.println("limit"+buff.limit());
+		System.out.println("position"+buff.position());
+		//调用flip（）
+		buff.flip();
+		System.out.println("capacity"+buff.capacity());
+		System.out.println("limit"+buff.limit());
+		System.out.println("position"+buff.position());
+		//取出第一个元素
+		System.out.println("第一个元素（position=0）"+buff.get());
+		System.out.println("position"+buff.position());
+		//调用clear方法
+		buff.clear();
+		System.out.println("capacity"+buff.capacity());
+		System.out.println("limit"+buff.limit());
+		System.out.println("position"+buff.position());
+		System.out.println("查看缓冲区元素是否被清除"+buff.get(2));
+
+
+		System.out.println("执行最后读取position"+buff.position());
+
+
+	}
+7 NIO 流的Channel
+
+	/*
+	 * Channel可以直接将指定文件的部分或全部直接映射成Buffer
+	 * 程序不能直接访问Channel中的数据，包括读取写入都不行Channel只能与Buffer进行交互。也就是说如果要从Channel中取得数据
+	 * 必须先用buffer从Channel中取出一些数据然后让程序从buffer中取出这些数据，同样写入也需要先放在buffer中后写入Channel
+	 * Channel中最常见的三类方法是map（），read（），write（）
+	 */
+	public static void main(String[] args) throws Exception{
+		File f=new File("f://file.txt");
+
+		//创建FileInputStream，以该文件输入流创建FileChannel
+		FileChannel fc=new FileInputStream(f).getChannel();
+		//以文件输出流创建FileChannel，用以控制输出
+		FileChannel out=new FileOutputStream("f://file3.txt").getChannel();
+		//将FileChannel里的全部数据映射成ByteBuffer
+		MappedByteBuffer buff=fc.map(FileChannel.MapMode.READ_ONLY, 0, f.length());
+		//使用GBK的字符集来创建解码器
+		Charset charset=Charset.forName("UTF-8");
+		//直接将buffer里的数据全部输出
+		out.write(buff);
+		//再次调用buffer的clear（）方法，复原limit，position的位置
+		buff.clear();
+		//创建解码器（）对象
+		CharsetDecoder decoder=charset.newDecoder();
+		//使用解码器将ByteBuffer转换成CharBuffer
+		CharBuffer charBuffer=decoder.decode(buff);
+		//charBuffer的toString方法可以获取对应的字符串
+		System.out.println(charBuffer);
+	}
+
+	/*
+	 * 内容追加
+	 */
+	public static void test(String[] args) throws IOException{
+		File f=new File("f://file.txt");
+		//创建一个RandomAccess对象
+		RandomAccessFile raf=new RandomAccessFile(f, "rw");
+		//获取RandomAccessFile对象的channel
+		FileChannel fc=raf.getChannel();
+
+		//将channel中的所有数据映射成bytebuffer
+		ByteBuffer map = fc.map(FileChannel.MapMode.READ_ONLY, 0, f.length());
+		//把channel的记录指针移动到最后
+		fc.position(f.length());
+		//将buffer中的所有数据输出
+		fc.write(map);
+	}
+	/*
+	 * 如果channel对应的文件过大使用map（）方法一次将所有的文件内容映射到内存中引起性能下降，也可使用多次重复取水的方式
+	 */
+	public static void test2(String[] args) throws Exception{
+		//创建文件输入流
+		FileInputStream fis=new FileInputStream("f://file.txt");
+		//创建一个FileChannel
+		FileChannel fcin=fis.getChannel();
+		//定义一个ByteBuffer对象，用于重复取水
+		ByteBuffer bbuff=ByteBuffer.allocate(256);
+		//将FileChannel中的数据放入ByteBuffer中
+		while(fcin.read(bbuff)!=-1){
+			//锁定buffer的空白区
+			bbuff.flip();
+			//创建Charset对象
+			Charset charset=Charset.forName("UTF-8");
+			//创建解码器对象
+			CharsetDecoder newDecoder = charset.newDecoder();
+			//将ByteBuffer的内容转码
+			CharBuffer decode = newDecoder.decode(bbuff);
+			System.out.println(decode);
+			//将buffer初始化，为下一次读取数据做准备
+			bbuff.clear();
+		}
+	}
+发布于 2019-07-07 15:25
+IT 行业
+
+赞同 1
+
+分享
+
+评论千万条，友善第一条
+
+还没有评论，发表第一个评论吧
+推荐阅读
+总是记不住java的IO流用法？用N个问题教你掌握java IO流
+摘要：Java IO 体系看起来类很多，感觉很复杂，但其实是 IO 涉及的因素太多了。在设计 IO 相关的类时，编写者也不是从同一个方面考虑的，所以会给人一种很乱的感觉，并且还有设计模式的使用…
+
+华为云开发...
+发表于程序员之家
+Java IO流详解（面试不要再问我IO流）
+数据流的基本概念几乎所有的程序都离不开信息的输入和输出，比如从键盘读取数据，从文件中获取或者向文件中存入数据，在显示器上显示数据。这些情况下都会涉及有关输入/输出的处理。 在Java…
+
+Java架构成长之路
+从操作系统层面分析 Java IO 演进之路
+前言本文从操作系统实际调用角度（以CentOS Linux release 7.5操作系统为示例），力求追根溯源看IO的每一步操作到底发生了什么。 关于如何查看系统调用，Linux可以使用 strace 来查看任何软…
+
+阿里云云栖...
+发表于程序员进修...
+一篇彻底读懂java中的IO流！
+一、IO概念• I/O 即输入Input/ 输出Output的缩写，其实就是计算机调度把各个存储中（包括内存和外部存储）的数据写入写出的过程； • java中用“流（stream）”来抽象表示这么一个写入写出…
+
+李白写代码
+
+
+选择语言

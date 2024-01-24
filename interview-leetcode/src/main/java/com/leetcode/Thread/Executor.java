@@ -30,7 +30,7 @@ public class Executor {
             }
         });
         executorService.shutdownNow();
-        System.out.println("Main run");
+        System.out.println("Main.java run");
     }
 
 }

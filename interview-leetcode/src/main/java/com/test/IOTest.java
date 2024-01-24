@@ -254,7 +254,7 @@ public class IOTest {
         System.out.println(a2);*/
 
 //        UrlInput("http://www.baidu.com");
-//        fastCopy("D:\\WorkPlace1\\pro-interview\\interview-com.leetcode\\src\\com.leetcode\\Mind\\Sort.java", "main.java.com.test.txt");
+//        fastCopy("D:\\WorkPlace1\\pro-interview\\interview-com.leetcode\\src\\com.leetcode\\Mind\\Sort.java", "Main.java.java.com.test.txt");
 
         getRespString("234");
     }

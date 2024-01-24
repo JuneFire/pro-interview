@@ -31,6 +31,8 @@ public class offer315Test {
     public void test3145(){
         Offer3145 off = new Offer3145();
 
-        System.out.println(off.validateStackSequences2(new int[]{1,2,3,4,5}, new int[]{4,5,3,2,1}));
+//        System.out.println(off.validateStackSequences2(new int[]{1,2,3,4,5}, new int[]{4,5,3,2,1}));
+//        off.maxSlidingWindow( new int[]{1,3,-1,-3,5,3,6,7}, 3);
+        off.dicesProbability(2);
     }
 }
