@@ -3,13 +3,9 @@ package com.example;
 
 import com.leetcode.Structure.TreeNode;
 import com.leetcode.offer.Offer1630;
-import com.leetcode.offer.Offer3145;
 import com.leetcode.offer.Offer315;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import java.util.ArrayList;
-import java.util.LinkedList;
 
 /**
  * @author zkCheng
